@@ -1,0 +1,37 @@
+.hover-darken {
+    opacity: 1;
+    /*transition: all 0.3s ease;*/
+}
+
+.hover-darken:hover {
+    /*opacity: 0.5;*/
+    /*transition: 0.3s ease all;*/
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.selected {
+    color: #ffffff;
+    /*background: #858585;*/
+    background: rgb(91, 91, 91);
+}
+
+.selected-prev {
+    color: #ffffff;
+    /*background: #5b5b5b;*/
+    background: rgb(133, 133, 133);
+    background: linear-gradient(90deg, rgba(133, 133, 133, 0) 0%, rgba(91, 91, 91, 1) 100%);
+}
+
+.selected-next {
+    color: #ffffff;
+    /*background: #5b5b5b;*/
+    background: rgb(133,133,133);
+    background: linear-gradient(270deg, rgba(133, 133, 133, 0) 0%, rgba(91,91,91,1) 100%);
+}
+
+.dimmed {
+    opacity: 0.3;
+}

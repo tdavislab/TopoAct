@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TopoAct - Exploring Topology of Neural Activations</title>
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+<div id="container">
+    <div class="title-div">
+        <h1><span style="font-size: 1.3em">T</span>OPO<span style="font-size: 1.3em">A</span>CT</h1>
+        <h2>EXPLORING THE SHAPE OF ACTIVATIONS IN DEEP LEARNING</h2>
+    </div>
+    <hr class="title-hr">
+    <div class="content">
+        <h3>Introduction</h3>
+        <div class="content-matter">
+            <hr class="subhr">
+            Deep neural networks such as GoogLeNet and ResNet have achieved superhuman performance in tasks like image
+            classification.
+            To understand how such superior performance is achieved, we can probe a trained deep neural network by
+            studying
+            neuron activations, that is, combinations of neuron firings, at any layer of the network in response to a
+            particular
+            input.
+            With a large set of input images, we aim to obtain a global view of what neurons detect by studying their
+            activations.
+            We ask the following questions: What is the shape of the activation space?
+            That is, what is the organizational principle behind neuron activations, and how are the activations related
+            within
+            a layer and across layers?
+            Using tools from topological data analysis, we present <b>TopoAct</b>, a visual exploration system used to
+            study
+            topological summaries of activation vectors for a single layer as well as the evolution of such summaries
+            across
+            multiple layers.
+            We present visual exploration scenarios using <b>TopoAct</b> that provide valuable insights towards learned
+            representations of an image classifier.
+        </div>
+        <h3>Interactive Demos</h3>
+        <div class="content-matter">
+            <hr class="subhr">
+            <div class="demo">
+                <div>
+                    <a href="single-layer-view.html"><img src="data/single-demo.png" alt="single layer view"
+                                                          href="single-layer-view.html">
+                    </a>
+                </div>
+                <div class="demo-matter">
+                    Explore the structure of activations from a single selected layer. Inspect nodes to
+                    see images from dataset and the corresponding feature visualization.
+                </div>
+            </div>
+            <div class="demo">
+                <div>
+                    <a href="multi-layer-view.html">
+                        <img src="data/multi-view.png" alt="multilayer view" href="multi-layer-view.html">
+                    </a>
+                </div>
+                <div class="demo-matter">
+                    Compare structures of activations across multiple consecutive layers. Use filters to search of a
+                    specific
+                    class or a set of classes across multiple graphs.
+                </div>
+            </div>
+            <div class="demo">
+                <div>
+                    <a href="single-layer-view-cifar.html">
+                        <img id="cifar-icon" src="data/single-demo-cifar.png"
+                             alt="single layer view - cifar"
+                             href="single-layer-view-cifar.html"
+                             style="max-width: 87%">
+                    </a>
+                </div>
+                <div class="demo-matter">
+                    Explore the structure of activations from a single selected layer on the CIFAR 10 and 100 datasets
+                    using
+                    ResNet architecture.
+                </div>
+            </div>
+        </div>
+        <h3>Video demonstration</h3>
+        <hr class="subhr">
+
+        <iframe align="center" width="600" height="327" src="https://www.youtube.com/embed/fJacUzH85-M" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+                style="display: block; margin: auto"></iframe>
+    </div>
+</div>
+</body>
+</html>

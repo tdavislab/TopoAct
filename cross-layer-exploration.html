@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cross Layer Exploration</title>
+  <link rel="stylesheet" href="css/layout_ce.css">
+  <link rel="stylesheet" href="css/colors_ce.css">
+</head>
+<body>
+<div id="le_link"><a href="layer-exploration.html">Layer Exploration</a></div>
+<div id="grid-container">
+  <h1 id="page-header" class="outline">Cross Layer Exploration</h1>
+  <div id="layer-list" class="outline">
+    <span id="mixed3a" class="outline hover-darken clickable" onclick="draw('mixed3a')">mixed3a</span>
+    <span id="mixed3b" class="outline hover-darken clickable" onclick="draw('mixed3b')">mixed3b</span>
+    <span id="mixed4a" class="outline hover-darken clickable" onclick="draw('mixed4a')">mixed4a</span>
+    <span id="mixed4b" class="outline hover-darken clickable" onclick="draw('mixed4b')">mixed4b</span>
+    <span id="mixed4c" class="outline hover-darken clickable" onclick="draw('mixed4c')">mixed4c</span>
+    <span id="mixed4d" class="outline hover-darken clickable" onclick="draw('mixed4d')">mixed4d</span>
+    <span id="mixed4e" class="outline hover-darken clickable" onclick="draw('mixed4e')">mixed4e</span>
+    <span id="mixed5a" class="outline hover-darken clickable" onclick="draw('mixed5a')">mixed5a</span>
+    <span id="mixed5b" class="outline hover-darken clickable" onclick="draw('mixed5b')">mixed5b</span>
+  </div>
+  <div id="mapper1" class="outline">
+    <svg id="mapper1-svg"></svg>
+  </div>
+  <div id="mapper2" class="outline">
+    <svg id="mapper2-svg"></svg>
+  </div>
+  <div id="mapper3" class="outline">
+    <svg id="mapper3-svg"></svg>
+  </div>
+</div>
+</body>
+<script src="https://d3js.org/d3.v5.js"></script>
+<script type="text/javascript" src="js/cross_draw.js"></script>
+<script type='text/javascript'>
+  window.onload = draw('mixed4c');
+
+  function draw(layer_name) {
+    console.log(layer_name);
+    cross_draw(layer_name);
+  }
+</script>
+</html>

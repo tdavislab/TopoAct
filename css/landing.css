@@ -1,0 +1,101 @@
+#container {
+  max-width: 2000px;
+  margin: auto;
+  width: 75%;
+  box-sizing: border-box;
+  -webkit-box-shadow: 10px 10px 30px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 30px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 10px 30px 0px rgba(0, 0, 0, 0.75);
+  padding: 0 0 20px 0;
+}
+
+body {
+  padding: 0;
+  font-family: FontAwesome, Roboto, sans-serif;
+  color: #585858;
+  font-size: 1.2em;
+  background-color: #fafafa;
+  margin-bottom: 40px;
+}
+
+h1 {
+  text-align: center;
+  /*padding: 20px;*/
+  padding-top: 10px;
+  margin: 10px;
+  font-size: 3em;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5em;
+  color: white;
+  padding-bottom: 15px;
+}
+
+hr.title-hr {
+  height: 10px;
+  border: 0;
+}
+
+div.title-div {
+  background-color: #0E5555;
+  margin: 0;
+}
+
+.content {
+  margin: 10px 5% 20px 5%;
+}
+
+.subhr {
+  color: #585858;
+}
+
+.content-matter {
+  margin: auto;
+  /*width: 80%;*/
+}
+
+.img-hover-zoom {
+  /*background-color: black;*/
+  /*width: 300px;*/
+  /*max-height: 100px;*/
+  overflow: hidden; /* [1.2] Hide the overflowing of child elements */
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* [2] Transition property for smooth transformation of images */
+.img-hover-zoom img {
+  max-width: 100%;
+  /*height: 100%;*/
+  /*max-height: 100px;*/
+  transition: all .5s ease;
+}
+
+/* [3] Finally, transforming the image when container gets hovered */
+.img-hover-zoom:hover img {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+.demo {
+  /*background-color: lightgrey;*/
+  display: flex;
+  padding: 30px;
+  -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+}
+
+.demo-matter {
+  padding-left: 5%;
+}
+
+img {
+  max-width: 100%;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+}

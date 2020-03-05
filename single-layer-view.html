@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>TopoAct - Exploring Topology of Neural Activations</title>
+  <link rel="stylesheet" href="css/layer-exploration-v2.css">
+  <link rel="stylesheet" href="css/awesomplete.css">
+  <link rel="stylesheet" href="css/all.css">
+</head>
+
+<body>
+<div id="grid-container">
+  <!-- Header -->
+  <div id="header" class="bordered">
+    <div id="title-text-left" class="bordered">TopoAct</div>
+    <div id="title-text-center" class="bordered"></div>
+    <div id="title-text-right" class="bordered">
+      <span id="header-page-link"><a href="multi-layer-view.html"
+                                     title="Switch to another view to &#013;compare graphs across layers">Multilayer Exploration</a></span>
+      <a href="index.html" style="color:var(--title-text-color)"><span class="fas fa-home clickable"></span></a>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div id="toolbar" class="bordered">
+    <div id="toolbar-layer-list" class="bordered">
+      <div class="toolbar-content" title="Select neural network layers from InceptionV1 architecture to visualize">
+        Layer
+      </div>
+      <!--      <div class="projection-dropdown">-->
+      <!--        <select id="projection-selector">-->
+      <!--          <option value="None">None</option>-->
+      <!--          <option value="t-SNE">t-SNE</option>-->
+      <!--          <option value="UMAP">UMAP</option>-->
+      <!--        </select>-->
+      <!--      </div>-->
+    </div>
+    <div id="separator1"></div>
+    <div id="toolbar-dataset" class="bordered"
+         title="Select among different datasets with different parameters. &#013; Overlap parameter is for the Mapper algorithm. &#013; Epsilon is used for DBSCAN clustering">
+      <div class="toolbar-content">Dataset</div>
+      <div class="dataset-dropdown">
+        <select id="dataset-selector"></select>
+      </div>
+    </div>
+    <div id="separator2"></div>
+    <div id="searchbox-div" class="bordered">
+      <input id="searchbox" type="text" placeholder="Search for class..." title="Type in name of class to filter graph">
+      <i id="myBtn" class="fas fa-th clickable modal-icon"
+         title="Select from a directory of class names to filter graph"></i>
+      <button class="clickable" style="text-align: center; font-size:1em; margin-left: 10px;"
+              title="Reset current filters"
+              onclick="resetSelection()">Reset
+      </button>
+    </div>
+    <div id="classes-modal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <span>Select classes</span>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!--  Graph area-->
+  <div id="mapper" class="bordered" style="background-color: var(--toolbar-bg-color)">
+    <svg id="mapper-svg"></svg>
+    <div class="zoom-controls">
+      <div id="zoom-in" class="fas fa-plus zoom-button"></div>
+      <div id="zoom-out" class="fas fa-minus zoom-button"></div>
+    </div>
+  </div>
+
+  <!--  Cluster Details-->
+  <div id="selection-details" class="bordered">
+    <div>Top Classes
+      <hr>
+      <div id="top-classes"></div>
+    </div>
+
+    <div id="original-images">
+      Images from top classes
+      <hr>
+      <div id="original-images-grid"></div>
+    </div>
+
+    <div id="activation-images">
+      <div> Activation images
+        <hr>
+        <div id="activation-images-grid"></div>
+      </div>
+    </div>
+    <div id="average-activation" style="padding-bottom: 20px;">
+      Averaged activation image
+      <hr>
+    </div>
+  </div>
+</div>
+</body>
+
+<script type="text/javascript" src="https://d3js.org/d3.v5.js"></script>
+<script type="text/javascript" src="js/awesomplete.js"></script>
+<script type="text/javascript" src="js/layer-exploration.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+</html>

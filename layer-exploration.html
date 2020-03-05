@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Exploring topology of Activation Atlas</title>
+  <link rel="stylesheet" href="css/layout_le.css">
+  <link rel="stylesheet" href="css/colors_le.css">
+</head>
+
+<body>
+<div id="le_link"><a href="cross-layer-exploration.html">Cross Layer Exploration</a></div>
+
+<div id="sim-highlight">
+  <input type="checkbox" value="Dogs" id="sim-highlight-chkbox">
+  <label for="sim-highlight-chkbox">Toggle similarity highlighting</label><br>
+</div>
+
+<div id="grid-container">
+  <h1 id="page-header" class="outline"> Layer Exploration</h1>
+
+  <div id="layer-list-wrapper" class="outline">
+    Select layer
+    <hr>
+    <div id="layer-list" class="outline">
+      <div id="mixed3a" class="outline hover-darken clickable" onclick="draw('mixed3a')">MIXED3A
+        <hr>
+      </div>
+      <div id="mixed3b" class="outline hover-darken clickable" onclick="draw('mixed3b')">MIXED3B
+        <hr>
+      </div>
+      <div id="mixed4a" class="outline hover-darken clickable" onclick="draw('mixed4a')">MIXED4A
+        <hr>
+      </div>
+      <div id="mixed4b" class="outline hover-darken clickable" onclick="draw('mixed4b')">MIXED4B
+        <hr>
+      </div>
+      <div id="mixed4c" class="outline hover-darken clickable" onclick="draw('mixed4c')">MIXED4C
+        <hr>
+      </div>
+      <div id="mixed4d" class="outline hover-darken clickable" onclick="draw('mixed4d')">MIXED4D
+        <hr>
+      </div>
+      <div id="mixed4e" class="outline hover-darken clickable" onclick="draw('mixed4e')">MIXED4E
+        <hr>
+      </div>
+      <div id="mixed5a" class="outline hover-darken clickable" onclick="draw('mixed5a')">MIXED5A
+        <hr>
+      </div>
+      <div id="mixed5b" class="outline hover-darken clickable" onclick="draw('mixed5b')">MIXED5B
+        <hr>
+      </div>
+    </div>
+  </div>
+  <div id="mapper" class="hypergraph-classic grid-item outline">
+    <span id='mapper-title'>Mapper Output</span>
+    <hr>
+    <!--        <div style="display: inline-block; position: absolute">L2 Norm Scale</div>-->
+    <div id="color-legend" style="display: inline-block"></div>
+    <div id="color-legend2" style="display: inline-block"></div>
+    <svg id="mapper-svg-prev"></svg>
+  </div>
+
+  <div id="cluster-details" class="line-graph outline grid-item">
+    <div>Cluster details
+      <hr>
+    </div>
+
+    <div>Top Classes
+      <hr>
+      <div id="top-classes"></div>
+    </div>
+
+    <div id="original-images">
+      Images from top classes
+      <hr>
+    </div>
+
+    <div id="activation-images">
+      <div> Activation images
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://d3js.org/d3.v5.js"></script>
+<script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
+<script type="text/javascript" src="js/draw_mapper.js"></script>
+<script type="text/javascript" src="js/sim_highlight.js"></script>
+<script type='text/javascript'>
+    window.onload = draw_mapper('mixed3a');
+
+    function draw(layer_name) {
+        console.log(layer_name);
+        draw_mapper(layer_name);
+    }
+
+    d3.select("#sim-highlight-chkbox").on("click", toggleSimHighlight);
+</script>
+
+</body>
+</html>

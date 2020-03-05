@@ -1,0 +1,83 @@
+.outline {
+    /*border: 0.5px dashed chocolate;*/
+}
+
+h1 {
+    font-size: 50px;
+    text-align: center;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    background-color: #2b2b2b;
+    color: aliceblue;
+    position: absolute;
+    top: 20px; /* Header Height */
+    bottom: 20px; /* Footer Height */
+    width: 100%;
+    margin: auto;
+}
+
+#le_link {
+    position: absolute;
+    top: 0;
+    right: 1em;
+}
+
+#le_link > a {
+    color: antiquewhite;
+}
+
+#grid-container {
+    display: grid;
+    grid-template-areas: 'header header header' 'layer-list layer-list layer-list' 'mapper1 mapper2 mapper3';
+    padding: 10px;
+    text-align: center;
+    grid-template-rows: 1fr 0.2fr 4fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 100%;
+}
+
+#layer-list {
+    grid-area: layer-list;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    align-items: center;
+    border: 1px solid darkgrey;
+
+}
+
+#layer-list > span {
+    display: inline-block;
+    /*border-left: 1px solid darkgrey;*/
+    /*border-right: 1px solid darkgrey;*/
+
+}
+
+#mapper1 {
+    grid-area: mapper1;
+    border: 1px solid darkgrey;
+
+}
+
+#mapper2 {
+    grid-area: mapper2;
+    border: 1px solid darkgrey;
+
+}
+
+#mapper3 {
+    grid-area: mapper3;
+    border: 1px solid darkgrey;
+
+}
+
+#layer-list-wrapper {
+    padding: 10px;
+    border: 1px solid darkgrey;
+
+}
+
+#page-header {
+    grid-area: header;
+}

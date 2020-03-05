@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>TopoAct - Exploring Topology of Neural Activations</title>
+  <link rel="stylesheet" href="css/cross-exploration-v2.css">
+  <link rel="stylesheet" href="css/awesomplete.css">
+  <link rel="stylesheet" href="css/all.css">
+</head>
+
+<body>
+<div id="grid-container">
+  <!-- Header -->
+  <div id="header" class="bordered">
+    <div id="title-text-left" class="bordered">TopoAct</div>
+    <div id="title-text-center" class="bordered"></div>
+    <div id="title-text-right" class="bordered">
+      <span id="header-page-link"><a href="single-layer-view.html" title="Switch to another view to &#013;view graphs for single layers">Single Layer Exploration</a></span>
+      <a href="index.html" style="color:var(--title-text-color)"><span class="fas fa-home clickable"></span></a>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div id="toolbar" class="bordered">
+    <div id="toolbar-layer-list" class="bordered">
+      <div class="toolbar-content" title="Select neural network layers from InceptionV1 architecture to visualize&#013;Selected layer will be visualized with previous and next layer in the list">Layer</div>
+    </div>
+    <div id="separator1"></div>
+    <div id="toolbar-dataset" class="bordered" title="Select among different datasets with different parameters. &#013; Overlap parameter is for the Mapper algorithm. &#013; Epsilon is used for DBSCAN clustering">
+      <div class="toolbar-content">Dataset</div>
+      <div class="dataset-dropdown">
+        <select id="dataset-selector"></select>
+      </div>
+    </div>
+    <div id="separator2"></div>
+    <div id="searchbox-div" class="bordered">
+      <input id="searchbox" type="text" placeholder="Search for class..." title="Type in name of class to filter graph">
+      <i id="myBtn" class="fas fa-th clickable modal-icon" title="Select from a directory of class names to filter graph"></i>
+      <button class="clickable" style="text-align: center; font-size:1em; margin-left: 10px;" title="Reset current filters"
+              onclick="resetSelection()">Reset
+      </button>
+    </div>
+    <div id="classes-modal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <span>Select classes</span>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!--  Graph area-->
+  <div id="mapper-prev" class="bordered">
+    <svg id="mapper-svg-prev"></svg>
+    <div class="zoom-controls">
+      <div id="zoom-in-prev" class="fas fa-plus zoom-button"></div>
+      <div id="zoom-out-prev" class="fas fa-minus zoom-button"></div>
+    </div>
+  </div>
+  <div id="mapper-curr" class="bordered">
+    <svg id="mapper-svg-curr"></svg>
+    <div class="zoom-controls">
+      <div id="zoom-in-curr" class="fas fa-plus zoom-button"></div>
+      <div id="zoom-out-curr" class="fas fa-minus zoom-button"></div>
+    </div>
+  </div>
+  <div id="mapper-next" class="bordered">
+    <svg id="mapper-svg-next"></svg>
+    <div class="zoom-controls">
+      <div id="zoom-in-next" class="fas fa-plus zoom-button"></div>
+      <div id="zoom-out-next" class="fas fa-minus zoom-button"></div>
+    </div>
+  </div>
+
+  <!--  Cluster Details-->
+  <!--  <div id="selection-details" class="bordered">-->
+  <!--    <div>Top Classes-->
+  <!--      <hr>-->
+  <!--      <div id="top-classes"></div>-->
+  <!--    </div>-->
+
+  <!--    <div id="original-images">-->
+  <!--      Images from top classes-->
+  <!--      <hr>-->
+  <!--    </div>-->
+
+  <!--    <div id="activation-images">-->
+  <!--      <div> Activation images-->
+  <!--        <hr>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+</div>
+</body>
+
+<script type="text/javascript" src="https://d3js.org/d3.v5.js"></script>
+<script type="text/javascript" src="js/awesomplete.js"></script>
+<script type="text/javascript" src="js/cross-exploration.js"></script>
+</html>

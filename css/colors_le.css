@@ -1,0 +1,17 @@
+.hover-darken {
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.hover-darken:hover {
+    opacity: 0.5;
+    /*transition: 0.3s ease all;*/
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.selected {
+    color: #9d9d9d;
+}
