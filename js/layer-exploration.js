@@ -68,6 +68,14 @@ function getColor(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name);
 }
 
+function jaccard_filtering(event) {
+    d3.select('#jaccard-value').html(this.value);
+    let graph_links = d3.selectAll('.graph-links');
+    graph_links.attr('visibility', 'visible');
+    graph_links.filter(l => l.jaccard <= this.value).attr('visibility', 'hidden');
+    graph_links.filter(l => l.jaccard > this.value).attr('visibility', 'visible');
+}
+
 function buildLayers() {
     function layerBtnClicked(data) {
         // First set all layer-buttons to unselected
@@ -120,6 +128,19 @@ function buildLayers() {
                 d3.selectAll(".node-glyph").attr("visibility", "hidden");
             }
         });
+
+        let jaccard_slider = layer_div.append('div')
+            .attr('id', 'jaccard-slider')
+            .html('Jaccard Threshold: <span id="jaccard-value">0</span>')
+            
+        jaccard_slider.append('input')
+            .attr('type', 'range')
+            .attr('min', 0)
+            .attr('max', 1)
+            .attr('step', 0.01)
+            .attr('value', 0)
+            .on('input', jaccard_filtering)
+
         // Set 3a as default selected layer
     } catch (e) {
         console.log(e)
@@ -256,7 +277,6 @@ function buildProjections() {
     async function draw_scatter_canvas(layer, method, num_points, canvas_elem) {
         try {
             let data_path = './data/2d-activations';
-            console.log(`${data_path}/${num_points}/${layer}_${method}.csv?dummy=123451`);
             d3.csv(`${data_path}/${num_points}/${layer}_${method}.csv?dummy=12345`).then(function (plot_data) {
                     let data = [];
                     for (let i = 0; i < plot_data.length; i++) {
@@ -287,7 +307,6 @@ function buildProjections() {
                             },
                         ]
                     };
-                    console.log(data.length);
 
                     projection_chart = new Chart(canvas_elem.node().getContext('2d'), {
                         type: 'scatter',
@@ -408,6 +427,14 @@ function resetSelection() {
     let searchbox = d3.select("#searchbox");
     searchbox.node().value = "";
     // searchbox.dispatch("keyup");
+
+    // Remove highlighted points from the projection view
+    if (d3.select("#projection-selector").property("value") !== "None") {
+        for (let i = 1; i < projection_chart.data.datasets.length; i++) {
+            projection_chart.data.datasets[i].data = [];
+        }
+        projection_chart.update();
+    }
 }
 
 async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_instance) {
@@ -620,6 +647,10 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
     const links = graph_data.links.map(d => Object.create(d));
     const nodes = graph_data.nodes.map(d => Object.create(d));
 
+    links.forEach((element, index, arr) => {
+        links[index].jaccard = jaccard(element);
+    })
+
 // Compute arrays of important properties
     let l2normvals = graph_data.nodes.map(d => parseFloat(d["l2NormAvg"]));
     let membership_length = graph_data.nodes.map(d => d["membership"].length);
@@ -656,8 +687,26 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
         } else {
             node.filter(d => !checkStrInArr(d, search_term_val)).attr("opacity", 0.1);
             d3.selectAll('#link-group').attr("opacity", 0.1);
+            if (getCurrentParams().projection !== "None") {
+                function addData(chart, label, color, data) {
+                    projection_chart.chart.data.datasets.push({
+                        label: label,
+                        backgroundColor: color,
+                        data: data,
+                        order: -1,
+                        pointRadius: 3
+                    });
+                    chart.update();
+                }
+    
+                // Create two datasets - highlighted points and non-highlighted points
+                let projection_points = projection_chart.data.datasets[0].data;
+                let update_data = projection_points.filter(d => labels[d.label].includes(search_term.node().value));
+                addData(projection_chart, 'selected', '#ff9511', update_data);
+            }
         }
     });
+    
     search_term.on("keyup", function () {
         let search_term_val = search_term.node().value;
         if (search_term_val === "") {
@@ -703,6 +752,7 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
         .selectAll("line")
         .data(links)
         .join("line")
+        .attr("class", "graph-links")
         .attr("stroke-width", (d, i) => link_strength_scale(overlaps[i]))
         .attr("stroke", (d, i) => links_color_scale(overlaps[i]));
 
@@ -786,7 +836,6 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
                 return "translate(" + d.x + "," + d.y + ")";
             });
     });
-    console.log(simulation);
 
 // Drag functions
     function drag_start(d) {
@@ -918,6 +967,27 @@ function make_modal_window() {
             nodes.attr("opacity", 1);
             nodes.filter(d => array_intersect(d["top_classes"].join(", ").split(",").map(x => x.trim().toLowerCase()), selected_labels.map(x => x.toLowerCase())).length === 0).attr("opacity", 0.1);
             links.attr("opacity", 0.1);
+
+            // Set projection values
+            if (getCurrentParams().projection !== "None") {
+                function addData(chart, label, color, data) {
+                    projection_chart.chart.data.datasets.push({
+                        label: label,
+                        backgroundColor: color,
+                        data: data,
+                        order: -1,
+                        pointRadius: 3
+                    });
+                    chart.update();
+                }
+    
+                // Create two datasets - highlighted points and non-highlighted points
+                let projection_points = projection_chart.data.datasets[0].data;
+                console.log(selected_labels);
+                let update_data = projection_points.filter(d => array_intersect(labels[d.label], selected_labels).length !== 0);
+                addData(projection_chart, 'selected', '#ff9511', update_data);
+            }
+
         } else {
             resetSelection();
         }
@@ -939,6 +1009,26 @@ function make_modal_window() {
                 nodes.attr("opacity", 1);
                 nodes.filter(d => array_intersect(d["top_classes"].join(", ").split(",").map(x => x.trim().toLowerCase()), selected_labels.map(x => x.toLowerCase())).length === 0).attr("opacity", 0.1);
                 links.attr("opacity", 0.1);
+
+            // Set projection values
+            if (getCurrentParams().projection !== "None") {
+                function addData(chart, label, color, data) {
+                    projection_chart.chart.data.datasets.push({
+                        label: label,
+                        backgroundColor: color,
+                        data: data,
+                        order: -1,
+                        pointRadius: 3
+                    });
+                    chart.update();
+                }
+    
+                // Create two datasets - highlighted points and non-highlighted points
+                let projection_points = projection_chart.data.datasets[0].data;
+                console.log(selected_labels);
+                let update_data = projection_points.filter(d => array_intersect(labels[d.label], selected_labels).length !== 0);
+                addData(projection_chart, 'selected', '#ff9511', update_data);
+            }
             } else {
                 resetSelection();
             }

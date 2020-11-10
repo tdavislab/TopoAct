@@ -94,7 +94,7 @@ body {
   grid-area: toolbar-layer-list;
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 1fr repeat(9, 0.11fr) 300px 200px;
+  grid-template-columns: 1fr repeat(9, 0.11fr) 300px 200px 200px;
   align-items: center;
   justify-items: center;
 }
