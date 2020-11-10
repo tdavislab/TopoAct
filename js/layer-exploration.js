@@ -429,12 +429,12 @@ function resetSelection() {
     // searchbox.dispatch("keyup");
 
     // Remove highlighted points from the projection view
-    if (d3.select("#projection-selector").property("value") !== "None") {
-        for (let i = 1; i < projection_chart.data.datasets.length; i++) {
-            projection_chart.data.datasets[i].data = [];
-        }
-        projection_chart.update();
-    }
+    // if (d3.select("#projection-selector").property("value") !== "None") {
+    //     for (let i = 1; i < projection_chart.data.datasets.length; i++) {
+    //         projection_chart.data.datasets[i].data = [];
+    //     }
+    //     projection_chart.update();
+    // }
 }
 
 async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_instance) {
