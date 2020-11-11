@@ -139,7 +139,7 @@ function buildLayers() {
             .attr('max', 1)
             .attr('step', 0.01)
             .attr('value', 0)
-            .on('input', jaccard_filtering)
+            .on('input', jaccard_filtering);
 
         // Set 3a as default selected layer
     } catch (e) {
@@ -687,6 +687,7 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
         } else {
             node.filter(d => !checkStrInArr(d, search_term_val)).attr("opacity", 0.1);
             d3.selectAll('#link-group').attr("opacity", 0.1);
+            
             if (getCurrentParams().projection !== "None") {
                 function addData(chart, label, color, data) {
                     projection_chart.chart.data.datasets.push({

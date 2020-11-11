@@ -68,6 +68,14 @@ function getColor(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name);
 }
 
+function jaccard_filtering(event) {
+    d3.select('#jaccard-value').html(this.value);
+    let graph_links = d3.selectAll('.graph-links');
+    graph_links.attr('visibility', 'visible');
+    graph_links.filter(l => l.jaccard <= this.value).attr('visibility', 'hidden');
+    graph_links.filter(l => l.jaccard > this.value).attr('visibility', 'visible');
+}
+
 function buildLayers() {
     function layerBtnClicked(data) {
         // First set all layer-buttons to unselected
@@ -122,7 +130,21 @@ function buildLayers() {
         //     }
         // });
         // Set 3a as default selected layer
-    } catch (e) {
+
+        let jaccard_slider = layer_div.append('div')
+            .style('margin-left', '30px')
+            .attr('id', 'jaccard-slider')
+            .html('Jaccard Threshold: <span id="jaccard-value">0</span>')
+        
+        jaccard_slider.append('input')
+            .attr('type', 'range')
+            .attr('min', 0)
+            .attr('max', 1)
+            .attr('step', 0.01)
+            .attr('value', 0)
+            .on('input', jaccard_filtering);
+
+        } catch (e) {
         console.log(e)
     }
 }
@@ -136,16 +158,8 @@ function buildProjections() {
         .attr("id", "projection-selector");
 
     projection_selector.append("option").attr("value", "None").attr("selected", 'None').html("Select projection");
-    projection_selector.append("option").attr("value", "TSNE-5000").html("t-SNE - 5k points");
-    projection_selector.append("option").attr("value", "TSNE-10000").html("t-SNE - 10k points");
-    projection_selector.append("option").attr("value", "TSNE-50000").html("t-SNE - 50k points");
-    projection_selector.append("option").attr("value", "TSNE-100000").html("t-SNE - 100k points");
-    projection_selector.append("option").attr("value", "TSNE-300000").html("t-SNE - 300k points");
-    projection_selector.append("option").attr("value", "UMAP-5000").html("UMAP - 5k points");
-    projection_selector.append("option").attr("value", "UMAP-10000").html("UMAP - 10k points");
-    projection_selector.append("option").attr("value", "UMAP-50000").html("UMAP - 50k points");
-    projection_selector.append("option").attr("value", "UMAP-100000").html("UMAP - 100k points");
-    projection_selector.append("option").attr("value", "UMAP-300000").html("UMAP - 300k points");
+    projection_selector.append("option").attr("value", "TSNE-5000").html("t-SNE");
+    projection_selector.append("option").attr("value", "UMAP-5000").html("UMAP");
 
     projection_selector.on("change", function () {
         let selected_value = projection_selector.property("value");
@@ -226,8 +240,8 @@ function buildProjections() {
     });
 
     async function draw_scatter(layer, method, svg_element) {
-        let data_path = './data/2d-activations';
-        let plot_data = await d3.csv(`${data_path}/${layer}_${method}.csv`);
+        let data_path = './data/2d-activations-cifar';
+        let plot_data = await d3.csv(`${data_path}/cifar_${layer}_${method}_euclidean.csv`);
         for (let i = 0; i < plot_data.length; i++) {
             plot_data[i].x = parseFloat(plot_data[i].x);
             plot_data[i].y = parseFloat(plot_data[i].y);
@@ -256,9 +270,14 @@ function buildProjections() {
 
     async function draw_scatter_canvas(layer, method, num_points, canvas_elem) {
         try {
-            let data_path = './data/2d-activations';
-            console.log(`${data_path}/${num_points}/${layer}_${method}.csv?dummy=123451`);
-            d3.csv(`${data_path}/${num_points}/${layer}_${method}.csv?dummy=12345`).then(function (plot_data) {
+            if (layer === 'layer0.1.bn1') {
+                layer = 'bn1';
+            }
+
+            let data_path = './data/2d-activations-cifar';
+            file_path = `${data_path}/cifar_${layer}_${method.toLowerCase()}_euclidean.csv?dummy=123451`
+            console.log(file_path);
+            d3.csv(file_path).then(function (plot_data) {
                     let data = [];
                     for (let i = 0; i < plot_data.length; i++) {
                         data.push({
@@ -430,6 +449,14 @@ function resetSelection() {
     let searchbox = d3.select("#searchbox");
     searchbox.node().value = "";
     // searchbox.dispatch("keyup");
+
+    // Remove highlighted points from the projection view
+    if (d3.select("#projection-selector").property("value") !== "None") {
+        for (let i = 1; i < projection_chart.data.datasets.length; i++) {
+            projection_chart.data.datasets[i].data = [];
+        }
+        projection_chart.update();
+    }
 }
 
 async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_instance) {
@@ -545,23 +572,24 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
             .html(d => labels[parseInt(d.replace("label", ""))]);
 
         // Highlight nodes in projection view
-        // if (getCurrentParams().projection !== "None") {
-        //     function addData(chart, label, color, data) {
-        //         projection_chart.chart.data.datasets.push({
-        //             label: label,
-        //             backgroundColor: color,
-        //             data: data,
-        //             order: -1,
-        //             pointRadius: 3
-        //         });
-        //         chart.update();
-        //     }
-        //
-        //     // Create two datasets - highlighted points and non-highlighted points
-        //     let projection_points = projection_chart.data.datasets[0].data;
-        //     let update_data = projection_points.filter(d => checkStrInArr(data, labels[d.label].join(', ')));
-        //     addData(projection_chart, 'selected', '#ff9511', update_data);
-        // }
+        if (getCurrentParams().projection !== "None") {
+            function addData(chart, label, color, data) {
+                projection_chart.chart.data.datasets.push({
+                    label: label,
+                    backgroundColor: color,
+                    data: data,
+                    order: -1,
+                    pointRadius: 3
+                });
+                chart.update();
+            }
+        
+            // Create two datasets - highlighted points and non-highlighted points
+            let projection_points = projection_chart.data.datasets[0].data;
+            console.log(projection_points, data['top_classes']);
+            let update_data = projection_points.filter(d => checkStrInArr(data, 'label' + d.label));
+            addData(projection_chart, 'selected', '#ff9511', update_data);
+        }
     }
 
     function handleMouseOut(data, clear_prev_selection) {
@@ -598,6 +626,7 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
     }
 
     function checkStrInArr(strArray, searchTerm) {
+        // console.log(strArray['top_classes'], searchTerm);
         return strArray["top_classes"].flat().join(", ").split(",").map(d => d.trim()).includes(searchTerm.trim());
     }
 
@@ -641,12 +670,17 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
     const links = graph_data.links.map(d => Object.create(d));
     const nodes = graph_data.nodes.map(d => Object.create(d));
 
+    links.forEach((element, index, arr) => {
+        links[index].jaccard = jaccard(element);
+    })
+
     // Compute arrays of important properties
     let l2normvals = graph_data.nodes.map(d => parseFloat(d["l2NormAvg"]));
     let membership_length = graph_data.nodes.map(d => d["membership"].length);
     let class_names = graph_data.nodes.map(d => d["top_classes"]);
     // Dedupe and flatten class name
-    class_names = [...new Set(class_names.map(d => d.map(x => x.split(","))).flat(2).map(y => y.trim()))];
+    // class_names = [...new Set(class_names.map(d => d.map(x => x.split(","))).flat(2).map(y => y.trim()))];
+    class_names = labels.map(x => x[0]);
     let overlaps = graph_data.links.map(jaccard);
 
     // Populate autocomplete text-box with new class names from the current layer
@@ -672,11 +706,32 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
     search_term.on("awesomplete-selectcomplete", function () {
         handleMouseOut("", true);
         let search_term_val = search_term.node().value;
+        // console.log(class_names.indexOf(search_term_val));
         if (search_term_val === "") {
             resetSelection();
         } else {
+            search_term_val = 'label' + class_names.indexOf(search_term_val);
             node.filter(d => !checkStrInArr(d, search_term_val)).attr("opacity", 0.1);
             d3.selectAll('#link-group').attr("opacity", 0.1);
+
+            if (getCurrentParams().projection !== "None") {
+                function addData(chart, label, color, data) {
+                    projection_chart.chart.data.datasets.push({
+                        label: label,
+                        backgroundColor: color,
+                        data: data,
+                        order: -1,
+                        pointRadius: 3
+                    });
+                    chart.update();
+                }
+    
+                // Create two datasets - highlighted points and non-highlighted points
+                let projection_points = projection_chart.data.datasets[0].data;
+                console.log(projection_points, search_term_val);
+                let update_data = projection_points.filter(d => d.label == search_term_val.replace('label', ''));
+                addData(projection_chart, 'selected', '#ff9511', update_data);
+            }
         }
     });
     search_term.on("keyup", function () {
@@ -724,6 +779,7 @@ async function draw_mapper(layer_name, dataset, svg_container, awesomeplete_inst
         .selectAll("line")
         .data(links)
         .join("line")
+        .attr("class", "graph-links")
         .attr("stroke-width", (d, i) => link_strength_scale(overlaps[i]))
         .attr("stroke", (d, i) => links_color_scale(overlaps[i]));
 
@@ -982,7 +1038,7 @@ async function wrapper() {
         let {dataset, layer} = getCurrentParams();
 
         draw_mapper(layer, dataset, '#mapper-svg', awesomplete_inst);
-        // buildProjections();
+        buildProjections();
     } catch (e) {
         console.log(e)
     }

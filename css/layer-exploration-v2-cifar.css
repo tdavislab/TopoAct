@@ -83,9 +83,9 @@ body {
 
   grid-area: toolbar;
   display: grid;
-  grid-template-columns: 0.5fr 100px 0.3fr;
+  grid-template-columns: 1fr 1px 0.5fr 1px 0.5fr;
   grid-template-rows: 1fr;
-  grid-template-areas: "toolbar-layer-list separator1 toolbar-dataset";
+  grid-template-areas: "toolbar-layer-list separator1 toolbar-dataset separator2 searchbox-div";
   align-items: center;
   justify-items: center;
 }
@@ -94,7 +94,7 @@ body {
   grid-area: toolbar-layer-list;
   display: grid;
   /*grid-template-rows: 1fr;*/
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr) 200px 200px;
   align-items: center;
   justify-items: center;
 }
