@@ -5,7 +5,7 @@ An interactive online demo can be found at: [https://tdavislab.github.io/TopoAct
 
 ### Installation
 
-To run a local instance preloaded with the ImageNet and CIFAR dataset, simply clone this repo and start a web server in the home directory (e.g. `python -m http.server`)
+To run a local instance preloaded with the ImageNet and CIFAR dataset, simply clone this repo and start a web server in the cloned repository's root directory (e.g. `python -m http.server`)
 
 <hr>
 Presently, the repo contains code for the front-end. Support for custom datasets and neural networks will be coming soon.
