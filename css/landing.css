@@ -82,8 +82,9 @@ div.title-div {
 }
 
 .demo {
-  /*background-color: lightgrey;*/
-  display: flex;
+  /* background-color: lightgrey; */
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
   padding: 30px;
   -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
@@ -92,10 +93,12 @@ div.title-div {
 }
 
 .demo-matter {
-  padding-left: 5%;
+  padding-left: 2em;
+  /* padding-right: 0.5em; */
 }
 
 img {
-  max-width: 100%;
+  /* max-width: 100%; */
+  /* flex-shrink: 0; */
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
 }
