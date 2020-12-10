@@ -3,4 +3,4 @@ Visualizing the topology of activations
 
 <hr>
 
-Interactive demo at: [https://architrathore.github.io/TopoAct-v2.1/](https://architrathore.github.io/TopoAct-v2.1/)
+Interactive demo at: [https://tdavislab.github.io/TopoAct/](https://tdavislab.github.io/TopoAct/)
